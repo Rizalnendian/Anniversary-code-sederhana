@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy 2nd Anniversary🥰</title>
+  <style>
+    /* --- Gaya Dasar (Untuk Desktop) --- */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 100%; height: 100%;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fff0f5;
+      overflow: hidden; /* Mencegah scroll di level body */
+    }
+    .page {
+      position: absolute;
+      width: 100%; height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+      padding: 20px; /* Padding dasar untuk semua ukuran */
+    }
+    .hidden { opacity: 0; transform: scale(0.95); pointer-events: none; z-index: 0; }
+    .visible { opacity: 1; transform: scale(1); z-index: 2; }
+
+    .btn {
+      padding: 15px 30px; font-size: 1.2rem;
+      background: #ff69b4; color: white; border: none; border-radius: 10px;
+      cursor: pointer; z-index: 10;
+      transition: background-color 0.3s ease;
+    }
+    .btn:hover { background: #ff1493; }
+
+    .content-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 5;
+      max-width: 90%;
+      width: 100%;
+    }
+
+    .message {
+      font-size: 1.5rem;
+      background: rgba(255,255,255,0.8);
+      padding: 20px;
+      border-radius: 20px;
+      text-align: center;
+      margin-bottom: 20px;
+      max-width: 800px;
+    }
+
+    .shape {
+      position: absolute; width: 80%; height: 50%; top: 25%; left: 10%;
+      background: rgba(255,192,203,0.2); border-radius: 60px;
+      z-index: 1;
+    }
+
+    .background-loves {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;
+      overflow: hidden; pointer-events: none;
+    }
+
+    .love {
+      position: absolute; width: 20px; height: 20px;
+      background: red; transform: rotate(45deg);
+      animation: float 10s infinite;
+    }
+    .love::before, .love::after {
+      content: ""; position: absolute;
+      width: 20px; height: 20px; background: red;
+      border-radius: 50%;
+    }
+    .love::before { top: -10px; left: 0; }
+    .love::after { left: -10px; top: 0; }
+
+    @keyframes float {
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+    }
+
+    .polaroid-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 20px;
+      margin-bottom: 20px; /* Tambahan margin bawah */
+      z-index: 2;
+      position: relative;
+    }
+
+    .polaroid {
+      background: white;
+      border: 10px solid white;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      width: 240px;
+      height: 320px;
+      object-fit: cover;
+      transform: rotate(var(--angle, 0deg));
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+    .polaroid:hover {
+      transform: scale(1.05) rotate(var(--angle, 0deg));
+    }
+
+    .preview-modal {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: none; /* Diubah dari display:flex ke display:none */
+      align-items: center; justify-content: center;
+      z-index: 100;
+    }
+    .preview-modal img {
+      max-width: 90%; max-height: 90%;
+      box-shadow: 0 0 20px rgba(255,255,255,0.8);
+      border-radius: 10px;
+    }
+    .close-preview {
+      position: absolute; top: 20px; right: 30px;
+      font-size: 2rem; color: white;
+      background: none; border: none; cursor: pointer;
+      z-index: 101;
+    }
+
+    #music-wrapper {
+      position: fixed; bottom: 20px; right: 20px;
+      display: flex; align-items: center; gap: 10px;
+      z-index: 999;
+      background: rgba(255, 105, 180, 0.9);
+      padding: 8px 12px; border-radius: 30px;
+      color: white; font-size: 1rem;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+    #music-control {
+      background: none; border: none; font-size: 1.5rem;
+      color: white; cursor: pointer;
+    }
+    #music-control:hover { color: #ffe6f0; }
+
+    /* --- Media Queries untuk Responsif (Mobile & Tablet) --- */
+    @media (max-width: 768px) {
+      /* Mengizinkan scroll vertikal jika konten melebihi layar */
+      .page {
+          overflow-y: auto;
+          justify-content: flex-start; /* Mulai konten dari atas */
+          padding-top: 60px; /* Beri ruang di atas */
+          padding-bottom: 120px; /* Beri ruang untuk tombol di bawah */
+      }
+      #page1 {
+          justify-content: center; /* Khusus halaman pertama tetap di tengah */
+      }
+      h1, #page1 h1 {
+          font-size: 1.8rem; /* Ukuran font judul lebih kecil */
+          margin-bottom: 25px;
+      }
+      .message {
+          font-size: 1.1rem; /* Ukuran font pesan lebih kecil */
+          padding: 15px;
+          max-width: 100%; /* Gunakan lebar penuh */
+      }
+      .btn {
+          padding: 12px 25px;
+          font-size: 1rem;
+      }
+      .polaroid-container {
+          gap: 15px;
+      }
+      .polaroid {
+          width: 45%; /* Dua gambar per baris */
+          height: auto;
+          aspect-ratio: 3 / 4; /* Menjaga rasio aspek polaroid */
+          border-width: 8px;
+      }
+      .shape {
+          width: 95%; left: 2.5%;
+          max-height: 50%;
+      }
+       #music-wrapper {
+          bottom: 15px; right: 15px;
+          font-size: 0.8rem;
+      }
+       #music-control {
+          font-size: 1.2rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1, #page1 h1 {
+          font-size: 1.6rem; /* Lebih kecil lagi untuk ponsel */
+      }
+      .message {
+          font-size: 1rem; /* Teks lebih nyaman dibaca */
+      }
+      .polaroid-container {
+         /* Opsi: Ubah jadi 1 kolom jika layar sangat kecil */
+         /* flex-direction: column;
+         align-items: center; */
+      }
+      .polaroid {
+        /* Jika 1 kolom, gunakan lebar lebih besar */
+        /* width: 70%; */
+        /* max-width: 200px; */
+        border-width: 5px; /* Border lebih tipis */
+      }
+       #thx {
+        font-size: 1.1rem; /* Sesuaikan ukuran font di halaman terakhir */
+      }
+    }
+  </style>
+</head>
+<body>
+
+<audio id="click-sound" src="https://www.soundjay.com/buttons/sounds/button-29.mp3" preload="auto"></audio>
+<audio id="bg-music" src="Paul Partohap - THANK YOU 4 LOVIN' ME (Lyric Video) - paul partohap.mp3" loop></audio>
+
+<div class="background-loves"></div>
+
+<div id="page1" class="page visible">
+  <div class="content-wrapper">
+    <h1 style="font-size: 2.5rem; text-align: center; color: #ff1493; margin-bottom: 20px;">
+      Happy Anniversary ke-2 Sayang🥰😆🎉🎉!
+    </h1>
+    <button class="btn" onclick="nextPageWrapper(1)">Lanjut</button>
+  </div>
+</div>
+
+<div class="preview-modal" id="previewModal">
+  <button class="close-preview" onclick="closePreview()">×</button>
+  <img id="previewImage" src="" alt="Preview" />
+</div>
+
+<div id="music-wrapper">
+  <button id="music-control" onclick="toggleMusic()">🔈</button>
+  <span style="font-size: 0.9rem;">Paul Partohap - Thank You 4 Lovin' Me</span>
+</div>
+
+<script>
+  const loveContainer = document.querySelector('.background-loves');
+  for (let i = 0; i < 40; i++) {
+    const heart = document.createElement('div');
+    heart.className = 'love';
+    heart.style.left = Math.random() * 100 + 'vw';
+    heart.style.animationDelay = Math.random() * 10 + 's';
+    loveContainer.appendChild(heart);
+  }
+
+  const messages = [
+    "Happy anniversary yang ke 2 tahun sayangkuuuuuu 😆💖🎉, gak kerasa ya udah 2 tahun aja. Dipikir pikir banyak banget hal yang udah kita lewatin, aku sendiri pun gak nyangka bisa sampe selama ini, ya... meskipun sering banget hubungan kita gak selalu happy happy aja tapi aku tetep seneng punya kamu. Jujur, mungkin 1 tahun terakhir bukan tahun yang gimana gimana, kita sering berantem, komunikasi kita jadi jarang malah cenderung banyak berantemnya. Gak saling menyalahkan juga, kita punya kehidupan masing masing, punya target yang harus di capai, punya tingkat ego yang beda beda, ya semuanya wajarlah ya. Yang jelas aku masih nyaman dan sayaaaaaaayang banget sama kamu. Semoga kedepannya kita bisa saling ngerti, saling kasih pengertian, saling lebih sayang satu sama lain, saling nurunin ego satu sama lain, saling ngerasa butuh ah pokoknya yang baik baik deh. Meskipun kita punya gap umur, semoga aku tetep bisa relate sama apa yang kamu rasain. kepanjangan lanjut slide 2 babe wkwkwk.",
+    "Aku minta maaf banget sebagai pacar kamu aku sering banget buat kamu gak nyaman, entah karena ego aku, gak pengertiannya aku dan apapun itu yang jelas aku masih banyak kurangnya😔. Mungkin banyak hal hal dari aku yang gak bisa atau belum bisa menuhin apa yang kamu mau. Aku minta maaf sebesar besarnya karena sering nyakitin kamu, belum bisa buat kamu bahagia, belum bener bener jadi suport system kamu. Aku sering buat kamu ngerasa iri sama pasangan lain, entah itu karena kekurangan aku, kondisi aku, dll. I try my best, kalo masih banyak kurangnya aku minta maaf banget, belum bisa romantis, belum bisa humoris apalagi ganteng, belum bisa ajak kamu ngedate ke tempat tempat yang unik unik. pokoknya aku minta maaf buat semua kesalahan dan kekurangan aku😓🙏🏻.",
+    "Oiya, aku beliin kamu hairdryer loh😗, gak mahal sih dan gak tau juga bakal tahan lama atau enggak, tadinya mau beli camera digital tapi takut kamu gak suka terus jadi jarang dipake, tapi kalo kamu mau nanti aku beli. Dari barang barang yang kamu lagi butuhin, aku bingung mau beli apa. Oiya babe, maaf kalo aku beli barang tuh gak pas sama momentnya, aku mikirnya aku kasih barang yang berguna buat kamu jadinya gak terlalu mubazir barang, aku baru sadar pas udah bayar, kenapa aku gak beli barang barang romantis ya kaya cincin atau kalung gitu tapi bolelah next time, kita beli yang asli biar gak nanggung. Tapi jujur, aku jadi mikir aku aneh banget jadi pacar malah kasih hadiah gak pas momennya, gak romantis juga lagi aniv malah dibeliin hairdryer, but semoga berguna dan tahan lama, kapan kapan kita beli kaya yang di salon salon. Kalo ada waktu senggang, jangan lupa review ya wkwkwk. Sorry banget ini mah babe kalo ucapannya alay wkwkwk",
+    "Btw, keren kan ucapannya? wkwkwkwk aku bikin pake bantuan chat gpt sih, kalo dari 0 gak bakal kekejar sampe hari ini, tapi tetep harus aku modifikasi. fotonya juga bisa kamu klik loh hehehe😗. Aku bingung gimana caranya romantis, jadi cuma mau bilang aku bahagia sama kamu, kamu dewasa meskipun moodnya suka berubah ubah, kamu keren, pekerja keras, cantik, imut pokoknya banyak deh kelebihan kamu dan aku bersyukur banget ada kamu🤗💗. Wufyu so muchhhhhhhhhhhhhhhhhhhhhhhhhhh🤗💗💖"
+  ];
+
+  const photoSets = [
+    ['foto1.jpg', 'foto2.jpg', 'foto3.jpg', 'foto4.jpg', 'foto5.jpg', 'foto6.jpg'],
+    ['foto7.jpg', 'foto8.jpg', 'foto9.jpg', 'foto10.jpg', 'foto11.jpg', 'foto12.jpg'],
+    ['foto13.jpg', 'foto14.jpg', 'foto15.jpg', 'foto16.jpg', 'foto17.jpg', 'foto18.jpg'],
+    ['foto19.jpg', 'foto20.jpg', 'foto21.jpg', 'foto22.jpg', 'foto23.jpg', 'foto24.jpg']
+  ];
+
+  messages.forEach((msg, i) => {
+    const page = document.createElement('div');
+    page.className = 'page hidden';
+    page.id = `page${i + 2}`;
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'content-wrapper';
+
+    const message = document.createElement('div');
+    message.className = 'message';
+    message.innerText = msg;
+    
+    const container = document.createElement('div');
+    container.className = 'polaroid-container';
+
+    photoSets[i].forEach(src => {
+      const img = document.createElement('img');
+      img.src = src;
+      img.className = 'polaroid';
+      img.style.setProperty('--angle', `${Math.random() * 5 - 2.5}deg`);
+      img.onclick = () => showPreview(src);
+      container.appendChild(img);
+    });
+
+    const btn = document.createElement('button');
+    btn.className = 'btn';
+    btn.innerText = i < messages.length - 1 ? 'Lanjut' : 'Selesai';
+    btn.onclick = () => nextPageWrapper(i + 2);
+
+    wrapper.appendChild(message);
+    wrapper.appendChild(container); // Foto di dalam wrapper
+    wrapper.appendChild(btn);
+
+    const shape = document.createElement('div');
+    shape.className = 'shape';
+    
+    page.appendChild(shape);
+    page.appendChild(wrapper); // Wrapper sekarang anak dari page
+    document.body.appendChild(page);
+  });
+
+  const lastPage = document.createElement('div');
+  lastPage.className = 'page hidden';
+  lastPage.id = 'page6';
+
+  const wrapper6 = document.createElement('div');
+  wrapper6.className = 'content-wrapper';
+
+  const thx = document.createElement('h2');
+  thx.id = 'thx'; // ID untuk styling
+  thx.innerText = 'Terima kasih banyak udah mau nerima & bertahan sama aku selama ini. Kalo emang jodoh, kita bisa terus bareng bareng jadi pasangan. Kalo memang bukan jodohnya, setidaknya aku bersyukur pernah ditemenin dan disayang kamu selama ini ❤. Aku berharap apapun yang terjadi kedepannya, semoga kamu selalu bahagia jalanin hidup kamu, semua target kamu tercapai, pokoknya aku selalu dukung kamu. Jadi... Jangan tinggalin aku ya, supaya ada yang nemenin kamu hehehehe. Muach😚💗😘';
+  thx.style.color = '#d63384';
+  thx.style.marginBottom = '20px';
+  thx.style.textAlign = 'center';
+
+  const stopBtn = document.createElement('button');
+  stopBtn.className = 'btn';
+  stopBtn.innerText = 'Selesai ❤️';
+  stopBtn.onclick = () => alert('I hope that we will always be together, loving each other forever.');
+
+  wrapper6.appendChild(thx);
+  wrapper6.appendChild(stopBtn);
+  lastPage.appendChild(wrapper6);
+  document.body.appendChild(lastPage);
+
+  let currentPage = 1;
+  let musicStarted = false;
+
+  function nextPageWrapper(n) {
+      const clickSound = document.getElementById('click-sound');
+      const bgMusic = document.getElementById('bg-music');
+      
+      clickSound.play();
+
+      if (!musicStarted) {
+          bgMusic.play().then(() => {
+              musicStarted = true;
+          }).catch(error => {
+              console.log("Autoplay was prevented. User interaction is needed.");
+          });
+      }
+
+      const currentEl = document.getElementById(`page${currentPage}`);
+      const nextEl = document.getElementById(`page${n}`);
+
+      if (currentEl) {
+        currentEl.classList.remove('visible');
+        currentEl.classList.add('hidden');
+      }
+      if (nextEl) {
+        nextEl.classList.remove('hidden');
+        nextEl.classList.add('visible');
+        // Scroll ke atas saat pindah halaman di mobile
+        nextEl.scrollTop = 0;
+      }
+      currentPage = n;
+  }
+
+  // Ganti onclick pertama ke fungsi wrapper ini
+  function nextPage(pageNumber) {
+    const targetPage = pageNumber === 5 ? 6 : pageNumber + 1;
+    nextPageWrapper(targetPage);
+  }
+   // Mengganti fungsi `nextPage` asli menjadi lebih baik
+   document.querySelector('#page1 .btn').onclick = () => nextPage(1);
+   document.querySelectorAll('.page .btn').forEach(btn => {
+        // Ini akan menimpa onclick sebelumnya, jadi kita harus lebih spesifik
+   });
+
+   // Setup tombol secara eksplisit
+   function setupButtons() {
+        document.querySelector('#page1 .btn').onclick = () => nextPageWrapper(2);
+        for(let i = 2; i <= 5; i++) {
+            const pageBtn = document.querySelector(`#page${i} .btn`);
+            if (pageBtn) {
+                const nextPageNum = (i < 5) ? i + 1 : 6;
+                pageBtn.onclick = () => nextPageWrapper(nextPageNum);
+            }
+        }
+   }
+
+
+  function showPreview(src) {
+    const modal = document.getElementById('previewModal');
+    const img = document.getElementById('previewImage');
+    img.src = src;
+    modal.style.display = 'flex';
+  }
+
+  function closePreview() {
+    document.getElementById('previewModal').style.display = 'none';
+  }
+
+  document.getElementById('previewModal').addEventListener('click', function(e) {
+    if (e.target === this) closePreview();
+  });
+
+  function toggleMusic() {
+    const bgMusic = document.getElementById('bg-music');
+    const btn = document.getElementById('music-control');
+    if (bgMusic.paused) {
+      bgMusic.play();
+      btn.textContent = '🔈';
+    } else {
+      bgMusic.pause();
+      btn.textContent = '🔇';
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const bgMusic = document.getElementById('bg-music');
+    bgMusic.volume = 0.5;
+    
+    // Hapus autoplay, biarkan user yang memulai musik
+    bgMusic.removeAttribute('autoplay');
+    
+    // Ganti logika tombol
+    setupButtons();
+  });
+
+</script>
+</body>
+</html>
